@@ -1,4 +1,3 @@
-
 <suite name="Calculator Test Suite">
     <test name="Calculator Tests">
         <classes>
