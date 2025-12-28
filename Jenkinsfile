@@ -2,8 +2,8 @@ pipeline {
     agent any
     
     tools {
-        maven 'Maven-3.6.3'  // Configure in Jenkins Global Tools
-        jdk 'JDK-11'         // Configure in Jenkins Global Tools
+        maven 'Maven-3.6.3'
+        jdk 'JDK-11'
     }
     
     stages {
@@ -15,27 +15,21 @@ pipeline {
         
         stage('Build') {
             steps {
-                sh 'mvn clean compile'
+                bat 'mvn --version'
+                bat 'java --version'
+                bat 'mvn clean compile'
             }
         }
         
         stage('Test') {
             steps {
-                sh 'mvn test'
-            }
-            post {
-                always {
-                    testng(
-                        testResults: '**/target/surefire-reports/testng-results.xml',
-                        debugMode: true
-                    )
-                }
+                bat 'mvn test'
             }
         }
         
         stage('Package') {
             steps {
-                sh 'mvn package -DskipTests'
+                bat 'mvn package'
             }
         }
         
@@ -48,13 +42,13 @@ pipeline {
     
     post {
         always {
-            cleanWs()  // Clean workspace
-        }
-        success {
-            echo 'Pipeline completed successfully!'
+            cleanWs()
         }
         failure {
             echo 'Pipeline failed!'
+        }
+        success {
+            echo 'Pipeline succeeded!'
         }
     }
 }
